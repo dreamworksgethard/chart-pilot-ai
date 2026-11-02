@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Sora:wght@400;500;600&display=swap');
+
+:root {
+  --cp-blue: #0038a0;
+  --cp-blue-deep: #001a4d;
+  --cp-blue-mid: #0a2f7a;
+  --cp-orange: #ff6300;
+  --cp-orange-soft: #ff8a3d;
+  --cp-white: #ffffff;
+  --cp-ink: #0f172a;
+  --cp-muted: #64748b;
+
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Sora', sans-serif;
+
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--cp-ink);
+  background-color: #05070c;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: #05070c;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: #05070c;
+}
+
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
