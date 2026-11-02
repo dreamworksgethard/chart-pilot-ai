@@ -12,6 +12,7 @@
   --line: rgba(0, 56, 160, 0.5);
   --up: #5dff9a;
   --down: #ff7a5c;
+  --chrome-h: 4.35rem;
 
   position: relative;
   isolation: isolate;
@@ -764,6 +765,41 @@
   cursor: wait;
 }
 
+.home__menu-btn {
+  display: none;
+  appearance: none;
+  cursor: pointer;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: rgba(0, 56, 160, 0.22);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.home__menu-btn span {
+  display: block;
+  width: 1rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: #e8eefc;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.home__menu-btn.is-open span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.home__menu-btn.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.home__menu-btn.is-open span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
 /* Hero fills remaining viewport on the first page */
 .home__hero {
   flex: 1;
@@ -774,7 +810,7 @@
   width: 100%;
   max-width: 40rem;
   margin: 0 auto;
-  padding: 5.5rem 1.25rem 2.5rem;
+  padding: calc(var(--chrome-h) + 1.1rem) 1.25rem 2.5rem;
   text-align: center;
 }
 
@@ -1060,7 +1096,7 @@
 }
 
 .home__about .home__snap-inner {
-  padding: 5.5rem 0 2.5rem;
+  padding: calc(var(--chrome-h) + 1.1rem) 0 2.5rem;
 }
 
 .about-sys-wrap {
@@ -1441,7 +1477,7 @@
 }
 
 .home__analyzer .home__snap-inner {
-  padding: 5.25rem 0 1.75rem;
+  padding: calc(var(--chrome-h) + 0.95rem) 0 1.75rem;
 }
 
 .home__analyzer .analyzer__layout {
@@ -2659,7 +2695,7 @@
   display: flex;
   flex-direction: column;
   justify-content: safe center;
-  padding: 5.5rem 0 2.5rem;
+  padding: calc(var(--chrome-h) + 1.1rem) 0 2.5rem;
   box-sizing: border-box;
 }
 
@@ -3265,7 +3301,7 @@
   display: flex;
   flex-direction: column;
   justify-content: safe center;
-  padding: 5.5rem 0 2.5rem;
+  padding: calc(var(--chrome-h) + 1.1rem) 0 2.5rem;
   box-sizing: border-box;
 }
 
@@ -4482,7 +4518,7 @@ td.is-hot {
   display: flex;
   flex-direction: column;
   justify-content: safe center;
-  padding: 5.5rem 0 2.5rem;
+  padding: calc(var(--chrome-h) + 1.1rem) 0 2.5rem;
   box-sizing: border-box;
 }
 
@@ -4743,30 +4779,201 @@ td.is-hot {
 }
 
 @media (max-width: 720px) {
+  .home {
+    --chrome-h: 3.85rem;
+  }
+
   .home__top {
     grid-template-columns: 1fr auto;
-    grid-template-areas:
-      'logo actions'
-      'nav nav';
+    gap: 0.55rem;
+    padding: 0.65rem 0.85rem;
   }
 
   .home__logo {
-    grid-area: logo;
     justify-self: start;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    min-width: 0;
   }
 
-  .home__top-right {
-    grid-area: actions;
-  }
-
-  .home__nav-links {
-    grid-area: nav;
-    justify-self: center;
-    gap: 0.9rem;
+  .home__logo-mark {
+    width: 2rem;
+    height: 2rem;
   }
 
   .home__logo span {
-    font-size: 0.78rem;
+    font-size: 0.68rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .home__menu-btn {
+    display: inline-flex;
+  }
+
+  .home__nav-links {
+    position: fixed;
+    top: var(--chrome-h);
+    left: 0;
+    right: 0;
+    z-index: 41;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.35rem 0.85rem 0.85rem;
+    background: rgba(5, 7, 12, 0.96);
+    border-bottom: 1px solid rgba(0, 56, 160, 0.35);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .home__chrome.is-nav-open .home__nav-links {
+    display: flex;
+  }
+
+  .home__nav-links a {
+    padding: 0.75rem 0.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.9rem;
+  }
+
+  .home__nav-links a:last-child {
+    border-bottom: none;
+  }
+
+  .home__top-right {
+    gap: 0.4rem;
+  }
+
+  .home__x {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .home__wallet-btn {
+    padding: 0.38rem 0.55rem;
+    font-size: 0.52rem;
+  }
+
+  .home__wallet-addr {
+    display: none;
+  }
+
+  .home__progress {
+    right: 0.35rem;
+    gap: 0.4rem;
+  }
+
+  .home__hero {
+    padding: calc(var(--chrome-h) + 0.85rem) 1rem 5.5rem;
+    max-width: 100%;
+  }
+
+  .home__hero-logo {
+    width: clamp(5.5rem, 28vw, 7.5rem);
+    margin-bottom: 0.85rem;
+  }
+
+  .home__title {
+    font-size: clamp(1.55rem, 8vw, 2.1rem);
+  }
+
+  .home__lead {
+    font-size: 0.92rem;
+    max-width: 22rem;
+    margin-inline: auto;
+  }
+
+  .home__hero-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .home__hero-actions .home__btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .home__about .home__snap-inner,
+  .home__analyzer .home__snap-inner,
+  .home__how .home__snap-inner,
+  .home__features .home__snap-inner,
+  .home__tokenomics .home__snap-inner {
+    padding: calc(var(--chrome-h) + 0.85rem) 0 5.25rem;
+  }
+
+  .home__section-head {
+    padding-left: 1rem;
+    padding-right: 1.6rem;
+  }
+
+  .home__section-head h2 {
+    font-size: clamp(1.2rem, 6.5vw, 1.65rem);
+  }
+
+  .about-sys {
+    padding: 0 1rem;
+  }
+
+  .about-sys__console {
+    height: auto;
+    min-height: 18rem;
+    max-height: none;
+  }
+
+  .analyzer {
+    padding: 0 0.85rem;
+  }
+
+  .analyzer__layout {
+    gap: 1rem;
+  }
+
+  .tv-chart {
+    min-height: 18rem;
+  }
+
+  .pilot-scan__hud {
+    max-width: calc(100% - 1rem);
+    left: 0.5rem;
+    bottom: 0.5rem;
+  }
+
+  .how {
+    width: min(100% - 1.5rem, 1120px);
+  }
+
+  .how__pipeline {
+    gap: 0.7rem;
+  }
+
+  .home__feat-grid {
+    padding: 0 1rem 0 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .tokenomics {
+    padding: 0 1rem;
+  }
+
+  .agent-dock {
+    right: 0.7rem;
+    bottom: 0.7rem;
+  }
+
+  .agent-fab {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  .agent-chat {
+    width: min(calc(100vw - 1.2rem), 22rem);
+    right: 0;
   }
 }
 
@@ -4790,7 +4997,7 @@ td.is-hot {
 
 @media (max-height: 640px) {
   .home__hero {
-    padding: 0.75rem 1.25rem 1.25rem;
+    padding: calc(var(--chrome-h) + 0.5rem) 1.25rem 1.25rem;
   }
 
   .home__title {

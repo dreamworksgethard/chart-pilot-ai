@@ -101,11 +101,13 @@ export function Home() {
   const { address, connecting, isConnected, connect, disconnect } = useWallet()
   const [caCopied, setCaCopied] = useState(false)
   const [activeSection, setActiveSection] = useState(0)
+  const [navOpen, setNavOpen] = useState(false)
   const homeRef = useRef<HTMLDivElement>(null)
   const snapLock = useRef(false)
   const wheelAcc = useRef(0)
   const lastWheelAt = useRef(0)
   const eatInertia = useRef(false)
+  const touchStart = useRef<{ y: number; x: number } | null>(null)
   const goToRef = useRef<(index: number) => void>(() => {})
 
   const copyCa = async () => {
@@ -291,15 +293,69 @@ export function Home() {
       if (idx < 0) return
       e.preventDefault()
       goTo(idx)
+      setNavOpen(false)
+    }
+
+    // Keep section content visible after touch/native scroll (mobile).
+    const syncActiveFromScroll = () => {
+      if (snapLock.current) return
+      const idx = currentIndex()
+      const list = sections()
+      list.forEach((el, i) => {
+        el.classList.toggle('is-active', i === idx)
+      })
+      setActiveSection(idx)
+    }
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return
+      touchStart.current = { y: e.touches[0].clientY, x: e.touches[0].clientX }
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!touchStart.current || snapLock.current || eatInertia.current) {
+        touchStart.current = null
+        return
+      }
+      const t = e.changedTouches[0]
+      if (!t) {
+        touchStart.current = null
+        return
+      }
+      const dy = touchStart.current.y - t.clientY
+      const dx = touchStart.current.x - t.clientX
+      touchStart.current = null
+
+      // Ignore taps / horizontal gestures.
+      if (Math.abs(dy) < 56 || Math.abs(dy) < Math.abs(dx) * 1.25) return
+
+      const list = sections()
+      const idx = currentIndex()
+      const panel = list[idx]
+      const inner = panel?.querySelector<HTMLElement>('.home__snap-inner')
+      if (inner) {
+        const top = inner.scrollTop <= 1
+        const bottom = inner.scrollTop + inner.clientHeight >= inner.scrollHeight - 2
+        if (dy > 0 && !bottom) return
+        if (dy < 0 && !top) return
+      }
+
+      goTo(idx + (dy > 0 ? 1 : -1))
     }
 
     root.addEventListener('wheel', onWheel, { passive: false, capture: true })
     root.addEventListener('click', onNavClick)
+    root.addEventListener('scroll', syncActiveFromScroll, { passive: true })
+    root.addEventListener('touchstart', onTouchStart, { passive: true })
+    root.addEventListener('touchend', onTouchEnd, { passive: true })
     return () => {
       window.clearTimeout(idleTimer)
       window.clearTimeout(snapUnlockTimer)
       root.removeEventListener('wheel', onWheel, true)
       root.removeEventListener('click', onNavClick)
+      root.removeEventListener('scroll', syncActiveFromScroll)
+      root.removeEventListener('touchstart', onTouchStart)
+      root.removeEventListener('touchend', onTouchEnd)
     }
   }, [reduce])
 
@@ -314,19 +370,22 @@ export function Home() {
             className={`home__progress-dot${i === activeSection ? ' is-active' : ''}${i < activeSection ? ' is-passed' : ''}`}
             aria-label={section.label}
             aria-current={i === activeSection ? 'true' : undefined}
-            onClick={() => goToRef.current(i)}
+            onClick={() => {
+              setNavOpen(false)
+              goToRef.current(i)
+            }}
           />
         ))}
       </nav>
 
-      <header className="home__chrome is-scrolled">
+      <header className={`home__chrome is-scrolled${navOpen ? ' is-nav-open' : ''}`}>
         <div className="home__top">
           <a className="home__logo" href="/" aria-label="Chart Pilot AI home">
             <img className="home__logo-mark" src="/logo.png" alt="" width={40} height={40} />
             <span>Chart Pilot AI</span>
           </a>
 
-          <nav className="home__nav-links" aria-label="Primary">
+          <nav className="home__nav-links" aria-label="Primary" id="home-primary-nav">
             <a href="#about">About</a>
             <a href="#analyzer">Analyzer</a>
             <a href="#how">How it works</a>
@@ -368,6 +427,18 @@ export function Home() {
                 </button>
               )}
             </div>
+            <button
+              type="button"
+              className={`home__menu-btn${navOpen ? ' is-open' : ''}`}
+              aria-label={navOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={navOpen}
+              aria-controls="home-primary-nav"
+              onClick={() => setNavOpen((v) => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
           </div>
         </div>
       </header>
