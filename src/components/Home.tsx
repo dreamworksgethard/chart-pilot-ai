@@ -548,7 +548,7 @@ export function Home() {
               </a>
               <a
                 className="home__btn home__btn--ghost"
-                href="https://pump.fun"
+                href="https://pump.fun/profile/ChartPilotAI"
                 target="_blank"
                 rel="noreferrer noopener"
               >
