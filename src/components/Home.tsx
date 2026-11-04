@@ -8,7 +8,7 @@ import { ChartAnalyzer } from './ChartAnalyzer'
 import { HowItWorks } from './HowItWorks'
 
 /** Replace with the live CPAI mint when ready. */
-const CPAI_CA = 'SOON1111111111111111111111111111111111111111'
+const CPAI_CA = 'H6WnjgZtixXLt1bxjvSnVCdtuoH3oDd8KGnpYkCfpump'
 const CPAI_BUY_URL = `https://pump.fun/coin/${CPAI_CA}`
 
 const FEATURES = [
